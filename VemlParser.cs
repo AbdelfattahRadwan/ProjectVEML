@@ -47,6 +47,7 @@ namespace VEML
             {
                 VemlNode output = new VemlNode();
                 Parse(parts[i].Trim(), out output);
+
                 list.Add(output);
             }
 
