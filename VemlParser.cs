@@ -52,6 +52,13 @@ namespace VEML
 
             array = list.ToArray();
         }
+
+        public static int CheckSyntax(string input)
+        {
+            if (string.IsNullOrEmpty(input)) { return (int)VemlExitCode.NO_DATA; }
+
+            return (int)VemlExitCode.GOOD_CODE;
+        }
     }
 }
 

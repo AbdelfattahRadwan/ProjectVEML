@@ -98,29 +98,17 @@ namespace VEML.Text
 
             if (input.StartsWith("@tds"))
             {
-                string output = string.Concat(string.Empty, "<tr>\r\n");
-
-                string[] data = TrimArray(text.Split(new string[1] { "|&|" }, StringSplitOptions.RemoveEmptyEntries));
-
-                for (int j = 0; j < data.Length; j++)
-                {
-                    output = string.Concat(output, $"<td>{data[j]}</td>");
-                }
-
+                string output = string.Concat(string.Empty, "<tr>", Keywords.E_NewLine);
+                string[] data = TrimArray(text.Split(new string[1] { "|+|" }, StringSplitOptions.RemoveEmptyEntries));
+                for (int j = 0; j < data.Length; j++) { output = string.Concat(output, $"<td>{data[j]}</td>"); }
                 return string.Concat(output, "</tr>");
             }
 
             if (input.StartsWith("@ths"))
             {
-                string output = string.Concat(string.Empty, "<tr>\r\n");
-
-                string[] data = TrimArray(text.Split(new string[1] { "|&|" }, StringSplitOptions.RemoveEmptyEntries));
-
-                for (int i = 0; i < data.Length; i++)
-                {
-                    output = string.Concat(output, $"<th>{data[i]}</th>");
-                }
-
+                string output = string.Concat(string.Empty, "<tr>", Keywords.E_NewLine);
+                string[] data = TrimArray(text.Split(new string[1] { "|+|" }, StringSplitOptions.RemoveEmptyEntries));
+                for (int i = 0; i < data.Length; i++) { output = string.Concat(output, $"<th>{data[i]}</th>"); }
                 return string.Concat(output, "</tr>");
             }
 

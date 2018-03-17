@@ -4,7 +4,7 @@
     using System.Collections.Generic;
 
     [Serializable]
-    public class VemlNode
+    public class VemlNode : IEquatable<VemlNode>
     {
         public string name;
         public Dictionary<string, object> objects;
@@ -20,7 +20,14 @@
             booleans = new Dictionary<string, bool>();
         }
 
-        public VemlNode(string name, Dictionary<string, object> objects, Dictionary<string, double> numbers, Dictionary<string, string> strings, Dictionary<string, bool> booleans)
+        public VemlNode
+            (
+            string name,
+            Dictionary<string, object> objects,
+            Dictionary<string, double> numbers,
+            Dictionary<string, string> strings,
+            Dictionary<string, bool> booleans
+            )
         {
             this.objects = new Dictionary<string, object>();
             this.numbers = new Dictionary<string, double>();
@@ -61,42 +68,41 @@
             }
         }
 
+        public bool Equals(VemlNode other)
+        {
+            bool c0 = string.Compare(name, other.name) == 0;
+            bool c1 = objects.Equals(other.objects);
+            bool c2 = numbers.Equals(other.numbers);
+            bool c3 = booleans.Equals(other.booleans);
+            bool c4 = strings.Equals(other.strings);
+
+            return c0 && c1 && c2 && c3 && c4;
+        }
+
         public bool GetBoolean(string key)
         {
-            if (!booleans.ContainsKey(key))
-            {
-                return false;
-            }
+            if (!booleans.ContainsKey(key)) { return false; }
 
             return booleans[key];
         }
 
         public double GetNumber(string key)
         {
-            if (!numbers.ContainsKey(key))
-            {
-                return 0.0;
-            }
+            if (!numbers.ContainsKey(key)) { return 0.0; }
 
             return numbers[key];
         }
 
         public object GetObject(string key)
         {
-            if (!objects.ContainsKey(key))
-            {
-                return null;
-            }
+            if (!objects.ContainsKey(key)) { return null; }
 
             return objects[key];
         }
 
         public string GetString(string key)
         {
-            if (!this.strings.ContainsKey(key))
-            {
-                return string.Empty;
-            }
+            if (!strings.ContainsKey(key)) { return string.Empty; }
 
             return strings[key];
         }
@@ -138,6 +144,7 @@
                     output = string.Concat(output, $"{{BOOLEAN}} {pair4.Key}: {pair4.Value}");
                 }
             }
+
             return output;
         }
     }

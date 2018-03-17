@@ -1,4 +1,6 @@
-﻿namespace VEML.Text
+﻿using System;
+
+namespace VEML.Text
 {
     public class Keywords
     {
@@ -72,6 +74,8 @@
         public const string PARENT_SEPARATOR = "@";
         public const string CHILD_SEPARATOR = "let";
         public const string CHILD_MEMBER_SEPARATOR = "::";
+
+        public static readonly string E_NewLine = Environment.NewLine;
     }
 }
 
