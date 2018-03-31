@@ -60,14 +60,14 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="VemlConverter.cs" />
-    <Compile Include="V_DataType.cs" />
-    <Compile Include="V_ExitCode.cs" />
-    <Compile Include="V_Keywords.cs" />
-    <Compile Include="V_Node.cs" />
-    <Compile Include="V_Parser.cs" />
-    <Compile Include="V_StringFunctions.cs" />
-    <Compile Include="V_ValueMap.cs" />
+    <Compile Include="Source\V_Convert.cs" />
+    <Compile Include="Source\V_DataType.cs" />
+    <Compile Include="Source\V_ExitCode.cs" />
+    <Compile Include="Source\V_Keywords.cs" />
+    <Compile Include="Source\V_Node.cs" />
+    <Compile Include="Source\V_Parser.cs" />
+    <Compile Include="Source\V_StringFunctions.cs" />
+    <Compile Include="Source\V_ValueMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -82,7 +82,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="binaries\ProjectVEML.dll" />
+    <Content Include="DLLs\ProjectVEML.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
