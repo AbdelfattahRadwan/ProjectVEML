@@ -1,6 +1,6 @@
 ﻿namespace VEML
 {
-    public enum VEMLDataType
+    public enum V_DataType
     {
         OBJECT,
         NUMBER,

@@ -1,31 +1,74 @@
 ﻿using System;
+using System.Collections.Generic;
+using static VEML.V_StringFunctions;
 
-namespace VEML.Text
+namespace VEML
 {
-    public static class StringFunctions
+    public static class V_Parser
     {
-        public static string FullTrim(this string str)
+        /// <summary>
+        /// Parses the input snippet and sends the result V_Node to the output V_Node.
+        /// </summary>
+        /// <param name="snippet"></param>
+        /// <param name="output"></param>
+        public static void Parse(string snippet, out V_Node output)
         {
-            while (str.IndexOf(" ") > -1)
+            V_Node node = new V_Node();
+
+            string[] parts = snippet.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < parts.Length; i++)
             {
-                str = str.Replace(" ", string.Empty);
+                parts[i] = parts[i].Trim();
             }
 
-            return str;
-        }
-
-        public static int InsertAndGetIndex(ref string target, string input)
-        {
-            if (string.IsNullOrEmpty(input))
+            foreach (string str in parts)
             {
-                return 0;
+                if ((!str.StartsWith("!") && !string.IsNullOrWhiteSpace(str)) && !string.IsNullOrEmpty(str))
+                {
+                    if (str.StartsWith("@"))
+                    {
+                        node.Name = str.Split(new char[1] { '@' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+                    }
+                    else if (str.StartsWith("let"))
+                    {
+                        string[] memebers = str.Split(new string[1] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+                        string type = memebers[2].Trim().ToUpper();
+
+                        node.AddValue(type, memebers[1], memebers[3]);
+                    }
+                }
             }
 
-            target = target + input;
-
-            return (target.IndexOf(input) + input.Length);
+            output = node;
         }
 
+        /// <summary>
+        /// Parses an array of V_Nodes.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="array"></param>
+        public static void ParseArray(string input, out V_Node[] array)
+        {
+            List<V_Node> list = new List<V_Node>();
+
+            string[] parts = input.Split(new string[1] { "&>" }, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                V_Node output = new V_Node();
+                Parse(parts[i].Trim(), out output);
+                list.Add(output);
+            }
+
+            array = list.ToArray();
+        }
+
+        /// <summary>
+        /// Reads the input string and returns an html tag.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string ParseTag(string input)
         {
             string[] strArray = TrimArray(input.Split(new string[1] { "->" }, StringSplitOptions.RemoveEmptyEntries));
@@ -98,54 +141,33 @@ namespace VEML.Text
 
             if (input.StartsWith("@tds"))
             {
-                string output = string.Concat(string.Empty, "<tr>", Keywords.E_NewLine);
+                string output = string.Concat(string.Empty, "<tr>", V_Keywords.E_NewLine);
+
                 string[] data = TrimArray(text.Split(new string[1] { "|+|" }, StringSplitOptions.RemoveEmptyEntries));
-                for (int j = 0; j < data.Length; j++) { output = string.Concat(output, $"<td>{data[j]}</td>"); }
+
+                for (int j = 0; j < data.Length; j++)
+                {
+                    output = string.Concat(output, $"<td>{data[j]}</td>");
+                }
+
                 return string.Concat(output, "</tr>");
             }
 
             if (input.StartsWith("@ths"))
             {
-                string output = string.Concat(string.Empty, "<tr>", Keywords.E_NewLine);
+                string output = string.Concat(string.Empty, "<tr>", V_Keywords.E_NewLine);
+
                 string[] data = TrimArray(text.Split(new string[1] { "|+|" }, StringSplitOptions.RemoveEmptyEntries));
-                for (int i = 0; i < data.Length; i++) { output = string.Concat(output, $"<th>{data[i]}</th>"); }
+
+                for (int i = 0; i < data.Length; i++)
+                {
+                    output = string.Concat(output, $"<th>{data[i]}</th>");
+                }
+
                 return string.Concat(output, "</tr>");
             }
 
             return string.Empty;
-        }
-
-        public static string ASV(string text, string value)
-        {
-            if ((!string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text)) && (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value)))
-            {
-                return $"{text}=\"{value}\"";
-            }
-
-            return string.Empty;
-        }
-
-        public static string TagStrVal(string text, string value)
-        {
-            if (!string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text) && !string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
-            {
-                return $"{text}=\"{ value}\"";
-            }
-
-            return string.Empty;
-        }
-
-        public static string[] TrimArray(string[] array)
-        {
-            if (array.Length == 0)
-            {
-                return new string[0];
-            }
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = array[i].Trim();
-            }
-            return array;
         }
     }
 }

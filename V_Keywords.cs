@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace VEML.Text
+namespace VEML
 {
-    public class Keywords
+    public class V_Keywords
     {
         public const string HTML = "@html";
         public const string HEAD = "@head";

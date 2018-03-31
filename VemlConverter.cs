@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Reflection;
 using System.Text;
-using static VEML.Text.StringFunctions;
+using static VEML.V_StringFunctions;
+using static VEML.V_Parser;
 
 namespace VEML
 {
-    public static class VemlConverter
+    public static class V_Convert
     {
         public static string ToHTML(string veml)
         {
@@ -60,6 +62,35 @@ namespace VEML
             builder.AppendLine("</html>");
 
             return builder.ToString();
+        }
+
+        public static string Serialize(object obj)
+        {
+            V_Node vemlNode = new V_Node
+            {
+                Name = obj.GetType().Name
+            };
+
+            FieldInfo[] fields = obj.GetType().GetFields();
+            PropertyInfo[] properties = obj.GetType().GetProperties();
+
+            if (fields.Length != 0)
+            {
+                foreach (FieldInfo field in fields)
+                {
+                    vemlNode.AddValue("OBJECT", field.Name, field.GetValue(obj.GetType()).ToString());
+                }
+            }
+
+            if (properties.Length != 0)
+            {
+                foreach (PropertyInfo property in properties)
+                {
+                    vemlNode.AddValue("OBJECT", property.Name, property.GetValue(obj.GetType()).ToString());
+                }
+            }
+
+            return vemlNode.ToString();
         }
     }
 }
