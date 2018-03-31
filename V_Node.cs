@@ -119,6 +119,48 @@ namespace VEML
             return Strings[key];
         }
 
+        /// <summary>
+        /// Returns a value from the members of the node.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public object GetValue(string key)
+        {
+            foreach (KeyValuePair<string, double> num in Numbers)
+            {
+                if (string.Compare(num.Key, key) == 0)
+                {
+                    return num.Value;
+                }
+            }
+
+            foreach (KeyValuePair<string, bool> boolean in Booleans)
+            {
+                if (string.Compare(boolean.Key, key) == 0)
+                {
+                    return boolean.Value;
+                }
+            }
+
+            foreach (KeyValuePair<string, object> obj in Objects)
+            {
+                if (string.Compare(obj.Key, key) == 0)
+                {
+                    return obj.Value;
+                }
+            }
+
+            foreach (KeyValuePair<string, string> str in Strings)
+            {
+                if (string.Compare(str.Key, key) == 0)
+                {
+                    return str.Value;
+                }
+            }
+
+            return null;
+        }
+
         public override string ToString()
         {
             string output = string.Empty;
