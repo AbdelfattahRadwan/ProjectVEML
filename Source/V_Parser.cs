@@ -13,9 +13,9 @@ namespace VEML
         /// <param name="output"></param>
         public static void Parse(string snippet, out V_Node output)
         {
-            V_Node node = new V_Node();
+            var node = new V_Node();
 
-            string[] parts = snippet.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var parts = snippet.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 0; i < parts.Length; i++)
             {
@@ -32,8 +32,9 @@ namespace VEML
                     }
                     else if (str.StartsWith("let"))
                     {
-                        string[] memebers = str.Split(new string[1] { "::" }, StringSplitOptions.RemoveEmptyEntries);
-                        string type = memebers[2].Trim().ToUpper();
+                        var memebers = str.Split(new string[1] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        var type = memebers[2].Trim().ToUpper();
 
                         node.AddValue(type, memebers[1], memebers[3]);
                     }
@@ -50,14 +51,16 @@ namespace VEML
         /// <param name="array"></param>
         public static void ParseArray(string input, out V_Node[] array)
         {
-            List<V_Node> list = new List<V_Node>();
+            var list = new List<V_Node>();
 
-            string[] parts = input.Split(new string[1] { "&>" }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = input.Split(new string[1] { "&>" }, StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 0; i < parts.Length; i++)
             {
-                V_Node output = new V_Node();
+                var output = new V_Node();
+
                 Parse(parts[i].Trim(), out output);
+
                 list.Add(output);
             }
 
@@ -71,26 +74,26 @@ namespace VEML
         /// <returns></returns>
         public static string ParseTag(string input)
         {
-            string[] strArray = TrimArray(input.Split(new string[1] { "->" }, StringSplitOptions.RemoveEmptyEntries));
+            var strArray = TrimArray(input.Split(new string[1] { "->" }, StringSplitOptions.RemoveEmptyEntries));
 
-            string id = string.Empty;
-            string name = string.Empty;
-            string type = string.Empty;
-            string onclick = string.Empty;
-            string text = string.Empty;
-            string value = string.Empty;
-            string src = string.Empty;
-            string alt_text = string.Empty;
-            string width = string.Empty;
-            string height = string.Empty;
-            string color = string.Empty;
-            string size = string.Empty;
-            string face = string.Empty;
-            string href = string.Empty;
+            var id = string.Empty;
+            var name = string.Empty;
+            var type = string.Empty;
+            var onclick = string.Empty;
+            var text = string.Empty;
+            var value = string.Empty;
+            var src = string.Empty;
+            var alt_text = string.Empty;
+            var width = string.Empty;
+            var height = string.Empty;
+            var color = string.Empty;
+            var size = string.Empty;
+            var face = string.Empty;
+            var href = string.Empty;
 
-            foreach (string part in strArray)
+            foreach (var part in strArray)
             {
-                string[] parts = part.Split(new string[1] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+                var parts = part.Split(new string[1] { "::" }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (part.StartsWith("id")) { id = (parts.Length >= 2) ? parts[1] : string.Empty; }
                 if (part.StartsWith("name")) { name = (parts.Length >= 2) ? parts[1] : string.Empty; }
@@ -109,9 +112,13 @@ namespace VEML
             }
 
             if (input.StartsWith("@button")) { return $"<button{ASV(" type", type)}{ASV(" onclick", onclick)}>{text}</button>"; }
+
             if (input.StartsWith("@paragraph")) { return $"<p>{((strArray.Length >= 2) ? strArray[1] : string.Empty)}</p>"; }
+
             if (input.StartsWith("@input")) { return $"<input{ASV(" name", name)}{ASV(" type", type)}{ASV(" valie", value)}/>"; }
+
             if (input.StartsWith("@br")) { return "<br>"; }
+
             if (input.StartsWith("@title")) { return $"<title>{text}</title>"; }
 
             if (input.StartsWith("@image"))
@@ -125,25 +132,38 @@ namespace VEML
             }
 
             if (input.StartsWith("@endFont")) { return "</font>"; }
+
             if (input.StartsWith("@h1")) { return $"<h1>{text}</h1>"; }
+
             if (input.StartsWith("@h2")) { return $"<h2>{text}</h2>"; }
+
             if (input.StartsWith("@h3")) { return $"<h3>{text}</h3>"; }
+
             if (input.StartsWith("@h4")) { return $"<h4>{text}</h4>"; }
+
             if (input.StartsWith("@h5")) { return $"<h5>{text}</h5>"; }
+
             if (input.StartsWith("@h6")) { return $"<h6>{text}</h6>"; }
+
             if (input.StartsWith("@hyperlink")) { return $"<a{ASV(" href", href)}/>"; }
+
             if (input.StartsWith("@audioSource")) { return $"<audio controls><source src=\"{ src}\" type=\"{type}\"></audio>"; }
+
             if (input.StartsWith("@canvas")) { return $"<canvas{ASV(" id", id)}></canvas>"; }
+
             if (input.StartsWith("@center")) { return "<center>"; }
+
             if (input.StartsWith("@endCenter")) { return "</center>"; }
+
             if (input.StartsWith("@table")) { return "<table>"; }
+
             if (input.StartsWith("@endTable")) { return "</table>"; }
 
             if (input.StartsWith("@tds"))
             {
-                string output = string.Concat(string.Empty, "<tr>", V_Keywords.E_NewLine);
+                var output = string.Concat(string.Empty, "<tr>", V_Keywords.E_NewLine);
 
-                string[] data = TrimArray(text.Split(new string[1] { "|+|" }, StringSplitOptions.RemoveEmptyEntries));
+                var data = TrimArray(text.Split(new string[1] { "|+|" }, StringSplitOptions.RemoveEmptyEntries));
 
                 for (int j = 0; j < data.Length; j++)
                 {
@@ -155,9 +175,9 @@ namespace VEML
 
             if (input.StartsWith("@ths"))
             {
-                string output = string.Concat(string.Empty, "<tr>", V_Keywords.E_NewLine);
+                var output = string.Concat(string.Empty, "<tr>", V_Keywords.E_NewLine);
 
-                string[] data = TrimArray(text.Split(new string[1] { "|+|" }, StringSplitOptions.RemoveEmptyEntries));
+                var data = TrimArray(text.Split(new string[1] { "|+|" }, StringSplitOptions.RemoveEmptyEntries));
 
                 for (int i = 0; i < data.Length; i++)
                 {

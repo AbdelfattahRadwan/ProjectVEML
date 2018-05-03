@@ -31,10 +31,10 @@ namespace VEML
         {
             if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
             {
-                string k = key.Trim();
-                string v = value.Trim();
+                var k = key.Trim();
+                var v = value.Trim();
 
-                V_DataType vt = (V_DataType)Enum.Parse(typeof(V_DataType), type);
+                var vt = (V_DataType)Enum.Parse(typeof(V_DataType), type);
 
                 if (vt.Equals(V_DataType.OBJECT) && !Objects.ContainsKey(k))
                 {
@@ -62,11 +62,11 @@ namespace VEML
         /// <returns></returns>
         public bool Equals(V_Node other)
         {
-            bool c0 = string.Compare(Name, other.Name) == 0;
-            bool c1 = Objects.Equals(other.Objects);
-            bool c2 = Numbers.Equals(other.Numbers);
-            bool c3 = Booleans.Equals(other.Booleans);
-            bool c4 = Strings.Equals(other.Strings);
+            var c0 = string.Compare(Name, other.Name) == 0;
+            var c1 = Objects.Equals(other.Objects);
+            var c2 = Numbers.Equals(other.Numbers);
+            var c3 = Booleans.Equals(other.Booleans);
+            var c4 = Strings.Equals(other.Strings);
 
             return c0 && c1 && c2 && c3 && c4;
         }
@@ -126,7 +126,7 @@ namespace VEML
         /// <returns></returns>
         public object GetValue(string key)
         {
-            foreach (KeyValuePair<string, double> num in Numbers)
+            foreach (var num in Numbers)
             {
                 if (string.Compare(num.Key, key) == 0)
                 {
@@ -134,7 +134,7 @@ namespace VEML
                 }
             }
 
-            foreach (KeyValuePair<string, bool> boolean in Booleans)
+            foreach (var boolean in Booleans)
             {
                 if (string.Compare(boolean.Key, key) == 0)
                 {
@@ -142,7 +142,7 @@ namespace VEML
                 }
             }
 
-            foreach (KeyValuePair<string, object> obj in Objects)
+            foreach (var obj in Objects)
             {
                 if (string.Compare(obj.Key, key) == 0)
                 {
@@ -150,7 +150,7 @@ namespace VEML
                 }
             }
 
-            foreach (KeyValuePair<string, string> str in Strings)
+            foreach (var str in Strings)
             {
                 if (string.Compare(str.Key, key) == 0)
                 {
@@ -163,28 +163,28 @@ namespace VEML
 
         public override string ToString()
         {
-            string output = string.Empty;
+            var output = string.Empty;
 
             output += $"@{Name}";
 
             if (HasObjects)
             {
-                foreach (KeyValuePair<string, object> key in Objects) { output += $"let::{key.Key}::OBJECT::{key.Value}{Environment.NewLine}"; }
+                foreach (var key in Objects) { output += $"let :: {key.Key} :: OBJECT :: {key.Value}{Environment.NewLine}"; }
             }
 
             if (HasNumbers)
             {
-                foreach (KeyValuePair<string, double> key in Numbers) { output += $"let::{key.Key}::NUMBER::{key.Value}{Environment.NewLine}"; }
+                foreach (var key in Numbers) { output += $"let :: {key.Key} :: NUMBER :: {key.Value}{Environment.NewLine}"; }
             }
 
             if (HasStrings)
             {
-                foreach (KeyValuePair<string, string> key in Strings) { output += $"let::{key.Key}::STRING::{key.Value}{Environment.NewLine}"; }
+                foreach (var key in Strings) { output += $"let :: {key.Key} :: STRING :: {key.Value}{Environment.NewLine}"; }
             }
 
             if (HasBooleans)
             {
-                foreach (KeyValuePair<string, bool> key in Booleans) { output += $"let::{key.Key}::BOOLEAN::{key.Value}{Environment.NewLine}"; }
+                foreach (var key in Booleans) { output += $"let :: {key.Key} :: BOOLEAN :: {key.Value}{Environment.NewLine}"; }
             }
 
             return output;

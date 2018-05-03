@@ -5,7 +5,7 @@
         OBJECT,
         NUMBER,
         STRING,
-        BOOLEAN
+        BOOLEAN,
     }
 }
 
